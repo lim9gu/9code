@@ -1,0 +1,25 @@
+
+# git config
+
+git config --global user.name "G.Lim"
+git config --global user.email lim9gu@gmail.com
+
+# git init
+# run the command below at git local_repo directory
+# /d/git/
+
+git init
+
+#git add 
+
+git add filename
+
+git commit -m "test commit"
+
+
+#git remote
+
+git remote add origin https://github.com/emflant/sample.git
+
+#git pust
+git push -u origin master
