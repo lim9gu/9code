@@ -22,6 +22,7 @@ os.system('ls *.fits > inim.list')
 
 inim = np.genfromtxt('inim.list', dtype = str)
 
+im_list = []
 object_list = []
 filter_list = []
 exptime_list = []
@@ -37,25 +38,53 @@ for i = 0 in range(len(inim)) :
   
   if header_name == 'object'
     if input == obj :
+      print str(inim[i])
+      print 'Input : '+input+', Header :'+str(obj)
+      im_list.append(inim[i])
       object_list.append(obj)
     else :
-      
+      continue
+
   if header_name == 'filter'
     if input == fil :
+      print str(inim[i])
+      print 'Input : '+input+', Header :'+str(fil)
+      im_list.append(inim[i])
       filter_list.append(fil)
     else :
+      continue
+  
   if header_name == 'exptime'
     if input == expt :
+      print str(inim[i])
+      print 'Input : '+input+', Header :'+str(expt)
+      im_list.append(inim[i])
       exptime_list.append(expt)
     else :
+      continue
+  
   if header_name == 'imagetype'
     if input == imtype :
+      print str(inim[i])
+      print 'Input : '+input+', Header :'+str(imtype)
+      im_list.append(inim[i])
       imagetype_list.append(imtype)
     else :
-      
-      
-      
-      
+      continue
+
+if header_name == 'object' :
+  print im_list, object.list 
+if header_name == 'filter' :
+  print im_list, filter.list 
+if header_name == 'exptime'
+  print im_list, exptime.list 
+if header_name == 'imagetype'
+  print im_list, imagetype.list 
+            
+os.system('rm inim.list')      
+os.chdir('../')           
+
+print 'Done.'
       
       
       
