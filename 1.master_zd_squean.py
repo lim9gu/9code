@@ -9,7 +9,9 @@ import numpy as np
 import astropy.io.fits as fits
 from iraf import imred, ccdred
 
-# bias combine
+# zerocombine in dark directory
+
+os.chdir('dark')
 os.chdir('bias')
 os.system('ls *.fits > zero.list')
 os.system('gethead *.fits FILTER OBJECT IMAGETYP EXPTIME')
@@ -41,16 +43,15 @@ def zerocom(im, op, comb, rej, ccdtype, scale, gain, rdnoise, mode) :
 	print 'Resultant file is '+str(op)
 	print 'Master-Zero frame is made.'
 
-zerocom('@zero.list', 'zero', 'median', 'minmax', '', 'none', '1.2 ', '8.2 ', 'h' )
+#zerocom('@zero.list', 'zero', 'median', 'minmax', '', 'none', '1.2 ', '8.2 ', 'h' )
+zerocom('@zero.list', 'zero', 'median', 'crreject', '', 'none', '1.2 ', '8.2 ', 'h' )
 os.system('ds9 zero.fits -zoom to fit -single -match frame image &')
 os.chdir('../')
 
 # Master Dark 
 
-os.chdir('dark')
 os.system('ls *.fits > dark.list')
 os.system('gethead *.fits FILTER OBJECT IMAGETYP EXPTIME')
-
 
 def imarith(im, op, im2, result, mode):
 	print 'Running imarith for input images...'
@@ -62,7 +63,7 @@ def imarith(im, op, im2, result, mode):
 	iraf.module.imarith()
 	print 'Resultant file is '+str(result)
 	
-imarith('@dark.list', '-','../bias/zero.fits','z@dark.list','h')
+imarith('@dark.list', '-','./bias/zero.fits','z@dark.list','h')
 
 def imcombine(im, op, comb, rej, scale,gain, rdnoise, mode):
 
@@ -77,10 +78,13 @@ def imcombine(im, op, comb, rej, scale,gain, rdnoise, mode):
 	iraf.imcombine()
 	print 'dark.fits is created.'
 	
-imcombine('z@dark.list', 'dark', 'median', 'minmax', 'none','1.2 ', '8.2 ','h')
+imcombine('z@dark.list', 'dark', 'median', 'crreject', 'none','1.2 ', '8.2 ','h')
 os.system('ds9 dark.fits -zoom to fit -single -match frame image &')
 os.chdir('../')
-os.system('ds9 flat/2016*.fits -tile -zoom to fit -match frame image  &')
+
+print 'Master dark is created.'
+
+#os.system('ds9 flat/2016*.fits -tile -zoom to fit -match frame image  &')
 '''
 def ccdproc(im, op, ccdtype, zerocor, darkcor, flatcor, mode ):
 	
