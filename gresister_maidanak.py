@@ -27,7 +27,7 @@ which lists the reference and input coordinates of the control points.
 '''
 os.system('ls ac*.fits > im.list')
 
-
+iraf.gregister('input=@im.list output=g@im.list database= ')
 
 
 
